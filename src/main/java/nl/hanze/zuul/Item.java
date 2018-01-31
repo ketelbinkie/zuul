@@ -1,7 +1,5 @@
 package nl.hanze.zuul;
 
-import java.util.HashMap;
-
 public class Item {
     private String name;
     private String description;

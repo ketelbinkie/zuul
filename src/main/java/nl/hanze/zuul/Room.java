@@ -2,6 +2,7 @@ package nl.hanze.zuul;
 
 import java.util.Set;
 import java.util.HashMap;
+import nl.hanze.zuul.Item;
 import java.util.Iterator;
 
 /**
@@ -22,6 +23,7 @@ public class Room
 {
     private String description;
     private HashMap<String, Room> exits;        // stores exits of this room.
+    private HashMap<String, Item> items;        // stores items of this room.
 
     /**
      * Create a room described "description". Initially, it has
@@ -33,6 +35,7 @@ public class Room
     {
         this.description = description;
         exits = new HashMap<>();
+        items = new HashMap<>();
     }
 
     /**
@@ -44,6 +47,18 @@ public class Room
     {
         exits.put(direction, neighbor);
     }
+
+    /**
+     * Define an exit from this room.
+     * @param name The name of the item.
+     * @param item The item added to the room.
+     */
+    public void setItem(String name, Item item)
+    {
+        items.put(name, item);
+    }
+
+
 
     /**
      * @return The short description of the room

@@ -36,6 +36,7 @@ public class Game
     private void createRooms()
     {
         Room outside, theater, pub, lab, office;
+        Item book, phone, tablet;
       
         // create the rooms
         outside = new Room("outside the main entrance of the university");
@@ -43,6 +44,11 @@ public class Game
         pub = new Room("in the campus pub");
         lab = new Room("in a computing lab");
         office = new Room("in the computing admin office");
+
+        // create the items
+        book = new Item("Ssst!","Een hele mooie omschrijving", 750);
+        phone = new Item("iphone6", "super telefoon", 1275);
+        tablet = new Item("ipad", "super plat", 1500);
         
         // initialise room exits
         outside.setExit("east", theater);
@@ -58,13 +64,22 @@ public class Game
 
         office.setExit("west", lab);
 
+        // initialise the room items
+        outside.setItem(phone.getName(), phone);
+        outside.setItem(book.getName(), book);
+
+        theater.setItem(phone.getName(), phone);
+        theater.setItem("Lichter", new Item("Lichter","Beschrijving van Lichter", 900));
+
+        pub.setItem("ipad", tablet);
+
         currentRoom = outside;  // start game outside
     }
 
     /**
      *  Main play routine.  Loops until end of play.
      */
-    public void play() 
+    private void play()
     {            
         printWelcome();
 
