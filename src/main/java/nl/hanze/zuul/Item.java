@@ -4,12 +4,19 @@ public class Item {
     private String name;
     private String description;
     private int weight;
+    private boolean canBePickedUp;
+
+    public Item(){
+        name = "Item";
+        description = "Een item is het hoogste nivo";
+        weight = 1000;
+    }
 
     public Item(String name, String description, int weight){
         this.name = name;
         this.description=description;
         this.weight=weight;
-
+        setCanBePickedUp(true);
     }
 
     public String getDescription() {
@@ -36,4 +43,18 @@ public class Item {
         this.name = name;
     }
 
+    public boolean getCanBePickedUp() {
+        return canBePickedUp;
+    }
+
+    public void setCanBePickedUp(Boolean canBePickedUp) {
+        this.canBePickedUp = canBePickedUp;
+    }
+
+    public String getAllInfo(){
+        String text;
+        text = "Name: "+getName()+", Description: "+getDescription()+", Weight: "+getWeight();
+
+        return text;
+    }
 }

@@ -58,6 +58,14 @@ public class Room
         items.put(name, item);
     }
 
+    public Item getItem(String name)
+    {
+        return items.get(name);
+    }
+
+    public void removeItem(String name){
+        items.remove(name);
+    }
 
 
     /**

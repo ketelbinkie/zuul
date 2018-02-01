@@ -20,6 +20,7 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
+    private BackPack fjallraven;
         
     /**
      * Create the game and initialise its internal map.
@@ -27,6 +28,7 @@ public class Game
     public Game() 
     {
         createRooms();
+        createBackPack();
         parser = new Parser();
     }
 
@@ -36,8 +38,7 @@ public class Game
     private void createRooms()
     {
         Room outside, theater, pub, lab, office;
-        Item book, phone, tablet;
-      
+
         // create the rooms
         outside = new Room("outside the main entrance of the university");
         theater = new Room("in a lecture theater");
@@ -46,9 +47,11 @@ public class Game
         office = new Room("in the computing admin office");
 
         // create the items
-        book = new Item("Ssst!","Een hele mooie omschrijving", 750);
-        phone = new Item("iphone6", "super telefoon", 1275);
-        tablet = new Item("ipad", "super plat", 1500);
+        Book book1 = new Book("Ssst!","Een hele mooie omschrijving",750, 375);
+        Book book2 = new Book("BlueJ", "Programmeren in Java met BlueJ", 1575, 664);
+        Phone iphone6 = new Phone("iphone6", "super telefoon", 1275, "Dark gray",64);
+        Phone iphone6s = new Phone("iphone6s", "super telefoon", 1275, "Dark gray",64);
+        Flashlight maglite = new Flashlight("maglite", "super awesome flashlight", 500, 600);
         
         // initialise room exits
         outside.setExit("east", theater);
@@ -65,15 +68,19 @@ public class Game
         office.setExit("west", lab);
 
         // initialise the room items
-        outside.setItem(phone.getName(), phone);
-        outside.setItem(book.getName(), book);
+        outside.setItem(iphone6.getName(), iphone6);
+        outside.setItem(iphone6s.getName(), iphone6s);
 
-        theater.setItem(phone.getName(), phone);
-        theater.setItem("Lichter", new Item("Lichter","Beschrijving van Lichter", 900));
+        theater.setItem(book1.getName(), book1);
+        theater.setItem(book2.getName(), book2);
 
-        pub.setItem("ipad", tablet);
+        pub.setItem(maglite.getName(), maglite);
 
         currentRoom = outside;  // start game outside
+    }
+
+    private void createBackPack(){
+        fjallraven = new BackPack("fjallraven","The coolest bag ever.",300,5000);
     }
 
     /**
@@ -131,8 +138,20 @@ public class Game
                 goRoom(command);
                 break;
 
+            case PICK:
+                pickItem(command);
+                break;
+
+            case DROP:
+                dropItem(command);
+                break;
+
             case QUIT:
                 wantToQuit = quit(command);
+                break;
+
+            default:
+                System.out.println("Make your choice.......");
                 break;
         }
         return wantToQuit;
@@ -178,6 +197,53 @@ public class Game
             currentRoom = nextRoom;
             System.out.println(currentRoom.getLongDescription());
         }
+    }
+
+    private void pickItem(Command command){
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know what item to pick...
+            System.out.println("Which item to pick?");
+            return;
+        }
+
+        String itemName = command.getSecondWord();
+
+        Item itemToPick = currentRoom.getItem(itemName);
+
+        if(itemToPick == null){
+            System.out.println("There is no item '"+ itemName +"' in this room");
+        }
+        else {
+            if(itemToPick.getCanBePickedUp()){
+
+                fjallraven.addItemToBackPack(itemToPick);
+                currentRoom.removeItem(itemName);
+
+
+            }else {
+                System.out.println("Item '"+itemToPick.getName()+"' cannot be picked!");
+            }
+        }
+    }
+
+    private void dropItem(Command command){
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know what item to pick...
+            System.out.println("Which item to drop?");
+            return;
+        }
+
+        String itemName = command.getSecondWord();
+
+        Item itemToDrop = fjallraven.getItemOfBackPack(itemName);
+
+        if(itemToDrop == null){
+            System.out.println("There is no item '"+ itemName +"' in the backpack");
+        }
+        else {
+                fjallraven.removeItemOutBackPack(itemToDrop);
+                currentRoom.setItem(itemName, itemToDrop);
+            }
     }
 
     /** 
