@@ -1,151 +1,25 @@
 package nl.hanze.zuul;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
-public class BackPack extends Item {
+public class BackPack {
+    private String brand;
     private int maxWeight;
-    private List<Item> itemsInBackPack;
+    private HashMap<String, Item> itemsInBackPack;
 
-    {
-        itemsInBackPack = new List<Item>() {
-            @Override
-            public int size() {
-                return 0;
-            }
-
-            @Override
-            public boolean isEmpty() {
-                return false;
-            }
-
-            @Override
-            public boolean contains(Object o) {
-                return false;
-            }
-
-            @Override
-            public Iterator<Item> iterator() {
-                return null;
-            }
-
-            @Override
-            public Object[] toArray() {
-                return new Object[0];
-            }
-
-            @Override
-            public <T> T[] toArray(T[] a) {
-                return null;
-            }
-
-            @Override
-            public boolean add(Item item) {
-                return false;
-            }
-
-            @Override
-            public boolean remove(Object o) {
-                return false;
-            }
-
-            @Override
-            public boolean containsAll(Collection<?> c) {
-                return false;
-            }
-
-            @Override
-            public boolean addAll(Collection<? extends Item> c) {
-                return false;
-            }
-
-            @Override
-            public boolean addAll(int index, Collection<? extends Item> c) {
-                return false;
-            }
-
-            @Override
-            public boolean removeAll(Collection<?> c) {
-                return false;
-            }
-
-            @Override
-            public boolean retainAll(Collection<?> c) {
-                return false;
-            }
-
-            @Override
-            public void clear() {
-
-            }
-
-            @Override
-            public boolean equals(Object o) {
-                return false;
-            }
-
-            @Override
-            public int hashCode() {
-                return 0;
-            }
-
-            @Override
-            public Item get(int index) {
-                return null;
-            }
-
-            @Override
-            public Item set(int index, Item element) {
-                return null;
-            }
-
-            @Override
-            public void add(int index, Item element) {
-
-            }
-
-            @Override
-            public Item remove(int index) {
-                return null;
-            }
-
-            @Override
-            public int indexOf(Object o) {
-                return 0;
-            }
-
-            @Override
-            public int lastIndexOf(Object o) {
-                return 0;
-            }
-
-            @Override
-            public ListIterator<Item> listIterator() {
-                return null;
-            }
-
-            @Override
-            public ListIterator<Item> listIterator(int index) {
-                return null;
-            }
-
-            @Override
-            public List<Item> subList(int fromIndex, int toIndex) {
-                return null;
-            }
-        };
-    }
-
-    public BackPack(){
-        super();
-    }
-
-    public BackPack(String name, String description, int weight, int maxWeight){
-        super(name, description, weight);
+    public BackPack(String brand, int maxWeight){
+        this.brand = brand;
         this.maxWeight = maxWeight;
+        itemsInBackPack = new HashMap<>();
+    }
 
+
+    public String getBrand() {
+        return brand;
+    }
+
+    private void setBrand(String brand) {
+        this.brand = brand;
     }
 
     public int getMaxWeight() {
@@ -156,34 +30,63 @@ public class BackPack extends Item {
         this.maxWeight = maxWeight;
     }
 
-    public void addItemToBackPack(Item item){
-        itemsInBackPack.add(item);
-    }
-
-    public Item getItemOfBackPack(String name){
-        int index = itemsInBackPack.indexOf(name);
-        return itemsInBackPack.get(index);
-    }
-
-    public void removeItemOutBackPack(Item item){
-        itemsInBackPack.remove(item);
-    }
-
-
-    private String getItemsInBackPackString()
+    /**
+     * Define an item from this backpack.
+     * @param itemName The name of the item.
+     * @param item The item added to the backpack.
+     */
+    public void addItemToBackPack(String itemName, Item item)
     {
-        String returnString = "Items:";
-        Iterator<Item> it = itemsInBackPack.iterator();
-        while(it.hasNext()){
-            returnString += " "+ it.next().toString();
+        itemsInBackPack.put(itemName, item);
+    }
+
+    public Item getItemOfBackPack(String itemName)
+    {
+        return itemsInBackPack.get(itemName);
+    }
+
+    /**
+     * Removes the item with the given item name of the backpack's
+     * @param itemName of the backpack's items.
+     */
+
+    public void removeItemOutBackPack(String itemName){
+        itemsInBackPack.remove(itemName);
+    }
+
+    /**
+     * Return a description of the room in the form:
+     *     You are in the kitchen.
+     *     Exits: north west
+     *     Items: book phone
+     * @return A long description of this room
+     */
+    public String getDescriptionOfItemInTheBackpack() {
+        if (itemsInBackPack.size() != 0) {
+            return "In your backpack '" + getBrand() + "':\n" + getAllItemsInBackPackString();
         }
-        return returnString;
+        else{
+            return "Your backpack is empty!";
+        }
+    }
+
+    /**
+     * Return a string describing the backpack's items, for example
+     * "Items: book, phone".
+     * @return Details of the backpack's items.
+     */
+    private String getAllItemsInBackPackString(){
+        StringBuilder returnString = new StringBuilder("Items:");
+        Set<String> keys = itemsInBackPack.keySet();
+        for(String item : keys) {
+            returnString.append(" ").append(item);
+        }
+        return returnString.toString();
     }
 
     public String toString(){
         String text;
-        text = super.getAllInfo();
-        text += "Maximum Weight: "+ getMaxWeight();
+        text = "Brand: "+ getBrand()+", Maximum Weight: "+ getMaxWeight();
         return text;
     }
 

@@ -80,7 +80,7 @@ public class Game
     }
 
     private void createBackPack(){
-        fjallraven = new BackPack("fjallraven","The coolest bag ever.",300,5000);
+        fjallraven = new BackPack("fjallraven",15000);
     }
 
     /**
@@ -144,6 +144,9 @@ public class Game
 
             case DROP:
                 dropItem(command);
+                break;
+            case SHOW:
+                showItem();
                 break;
 
             case QUIT:
@@ -216,7 +219,7 @@ public class Game
         else {
             if(itemToPick.getCanBePickedUp()){
 
-                fjallraven.addItemToBackPack(itemToPick);
+                fjallraven.addItemToBackPack(itemName, itemToPick);
                 currentRoom.removeItem(itemName);
 
 
@@ -241,12 +244,16 @@ public class Game
             System.out.println("There is no item '"+ itemName +"' in the backpack");
         }
         else {
-                fjallraven.removeItemOutBackPack(itemToDrop);
+                fjallraven.removeItemOutBackPack(itemName);
                 currentRoom.setItem(itemName, itemToDrop);
             }
     }
 
-    /** 
+    private void showItem(){
+        System.out.println(fjallraven.getDescriptionOfItemInTheBackpack());
+    }
+
+    /**
      * "Quit" was entered. Check the rest of the command to see
      * whether we really quit the game.
      * @return true, if this command quits the game, false otherwise.
