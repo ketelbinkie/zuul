@@ -14,7 +14,7 @@ public class BackPack {
     }
 
 
-    public String getBrand() {
+    private String getBrand() {
         return brand;
     }
 
@@ -22,7 +22,7 @@ public class BackPack {
         this.brand = brand;
     }
 
-    public int getMaxWeight() {
+    private int getMaxWeight() {
         return maxWeight;
     }
 
@@ -63,6 +63,7 @@ public class BackPack {
      */
     public String getDescriptionOfItemInTheBackpack() {
         if (itemsInBackPack.size() != 0) {
+            //return "In your backpack '"+toString()+"':\n"+ getAllItemsInBackPackString();
             return "In your backpack '" + getBrand() + "':\n" + getAllItemsInBackPackString();
         }
         else{
@@ -75,13 +76,13 @@ public class BackPack {
      * "Items: book, phone".
      * @return Details of the backpack's items.
      */
-    private String getAllItemsInBackPackString(){
+    private StringBuilder getAllItemsInBackPackString(){
         StringBuilder returnString = new StringBuilder("Items:");
         Set<String> keys = itemsInBackPack.keySet();
         for(String item : keys) {
             returnString.append(" ").append(item);
         }
-        return returnString.toString();
+        return returnString;
     }
 
     public String toString(){
